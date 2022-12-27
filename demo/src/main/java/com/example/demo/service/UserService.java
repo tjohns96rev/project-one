@@ -33,29 +33,8 @@ public class UserService {
         return optUser.get();
     }
 
-    public List<User> findAll() {
-        List<User> users = this.userDao.findAll();
-        if (users.size() == 0) {
-            throw new EntityNotFound("No users are present in the database.");
-        }
-        return users;
-    }
-
     public String createUser(User newUser) {
         this.userDao.createUser(newUser.getUsername(), newUser.getPassword());
         return "Registered user";
-    }
-
-    public String updateUser(User user) {
-        int rowCount = this.userDao.updateUser(user.getUsername(), user.getPassword(), user.getId());
-        if (rowCount == 0) {
-            throw new EntityNotFoundException("Could not update user");
-        }
-        return "Player updated successfully";
-    }
-
-    public String deleteById(int id) {
-        this.userDao.deleteById(id);
-        return "User deleted";
     }
 }
