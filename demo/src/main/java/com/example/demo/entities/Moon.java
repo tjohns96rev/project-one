@@ -13,8 +13,8 @@ public class Moon {
     private int id;
     @Column(name = "name")
     private String name;
-    @Column(name = "ownerid")
-    private int ownerid;
+    @Column(name = "ownderId")
+    private int ownderId;
 
     public int getId() {
         return id;
@@ -32,16 +32,16 @@ public class Moon {
         this.name = name;
     }
 
-    public int getOwnerid() {
-        return ownerid;
+    public int getownderId() {
+        return ownderId;
     }
 
-    public void setOwnerid(int ownerid) {
-        this.ownerid = ownerid;
+    public void setownderId(int ownderId) {
+        this.ownderId = ownderId;
     }
 
     @Override
     public String toString() {
-        return "Moon [id=" + id + ", name=" + name + ", ownerid=" + ownerid + "]";
+        return "Moon [id=" + id + ", name=" + name + ", ownderId=" + ownderId + "]";
     }
 }

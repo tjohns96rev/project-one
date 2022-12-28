@@ -14,7 +14,7 @@ public class Planet {
     @Column(name = "name")
     private String name;
     @Column(name = "ownerid")
-    private int ownerid;
+    private int ownerId;
 
     public int getId() {
         return id;
@@ -32,17 +32,17 @@ public class Planet {
         this.name = name;
     }
 
-    public int getOwnerid() {
-        return ownerid;
+    public int getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwnerid(int ownerid) {
-        this.ownerid = ownerid;
+    public void setOwnerId(int ownerid) {
+        this.ownerId = ownerid;
     }
 
     @Override
     public String toString() {
-        return "Planet [id=" + id + ", name=" + name + ", ownerid=" + ownerid + "]";
+        return "Planet [id=" + id + ", name=" + name + ", ownerid=" + ownerId + "]";
     }
 
 }

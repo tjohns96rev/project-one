@@ -15,13 +15,7 @@ public interface MoonDao extends JpaRepository<Moon, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into moons values (default, :name, :ownerid)", nativeQuery = true)
-    void createMoon(@Param("name") String name, @Param("ownerid") String ownerid);
-
-    @Transactional
-    @Modifying
-    @Query(value = "update moons set name = :name , ownerid = :ownerid where id = :id ", nativeQuery = true)
-    int updateMoon(@Param("name") String name, @Param("ownerid") String ownerid,
-            @Param("id") int id);
+    @Query(value = "insert into moons values (default, :name, :ownerId)", nativeQuery = true)
+    void createMoon(@Param("name") String name, @Param("ownerId") int ownerId);
 
 }
