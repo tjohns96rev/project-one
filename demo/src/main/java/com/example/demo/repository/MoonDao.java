@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,10 @@ public interface MoonDao extends JpaRepository<Moon, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "insert into moons values (default, :name, :ownerId)", nativeQuery = true)
+    @Query(value = "insert into moons values (default, :name, :ownerId);", nativeQuery = true)
     void createMoon(@Param("name") String name, @Param("ownerId") int ownerId);
 
+    @Transactional
+    @Query(value = "Select * From moons Where ownerId = :ownerId", nativeQuery = true)
+    List<Moon> findByOwnerId(@Param("ownerId") int ownerId);
 }
