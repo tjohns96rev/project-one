@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Planet;
+import com.example.demo.exceptions.EntityNotFound;
 import com.example.demo.repository.PlanetDao;
 
 import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class PlanetService {
@@ -19,7 +18,7 @@ public class PlanetService {
     public List<Planet> findAll() {
         List<Planet> planets = this.planetDao.findAll();
         if (planets.size() == 0) {
-            throw new EntityNotFoundException("No planets found");
+            throw new EntityNotFound("No planets found");
         }
         return planets;
     }
@@ -27,7 +26,7 @@ public class PlanetService {
     public Planet findByName(String name) {
         Optional<Planet> optPlanet = this.planetDao.findByName(name);
         if (!optPlanet.isPresent()) {
-            throw new EntityNotFoundException("No planet found");
+            throw new EntityNotFound("No planet found");
         }
         return optPlanet.get();
     }
@@ -35,7 +34,7 @@ public class PlanetService {
     public Planet findById(int id) {
         Optional<Planet> optPlanet = this.planetDao.findById(id);
         if (!optPlanet.isPresent()) {
-            throw new EntityNotFoundException("No planet found");
+            throw new EntityNotFound("No planet found");
         }
         return optPlanet.get();
     }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entities.Planet;
 import com.example.demo.exceptions.EntityNotFound;
 import com.example.demo.service.PlanetService;
+import com.example.demo.exceptions.NotAuthorizedException;
 
 @RestController
 public class PlanetController {
@@ -27,35 +28,59 @@ public class PlanetController {
     @Autowired
     private PlanetService planetService;
 
+    @Autowired
+    private AuthenticateController authenticateController;
+
     @ExceptionHandler(EntityNotFound.class)
     public ResponseEntity<String> entityNotFound(EntityNotFound e) {
         planetLogger.error(e.getLocalizedMessage(), e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> notAuthorized(NotAuthorizedException e) {
+        planetLogger.error(e.getLocalizedMessage(), e);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
     @GetMapping("/api/planets")
     public ResponseEntity<List<Planet>> findAll() {
+        if (!authenticateController.isLoggedIn()) {
+            throw new NotAuthorizedException("You must login to perform this action.");
+        }
         return new ResponseEntity<>(planetService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/api/planet/id/{id}")
     public ResponseEntity<Planet> findById(@PathVariable int id) {
+        if (!authenticateController.isLoggedIn()) {
+            throw new NotAuthorizedException("You must login to perform this action.");
+        }
         return new ResponseEntity<>(this.planetService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/api/planet/{name}")
     public ResponseEntity<Planet> findByName(@PathVariable String name) {
+        if (!authenticateController.isLoggedIn()) {
+            throw new NotAuthorizedException("You must login to perform this action.");
+        }
         return new ResponseEntity<>(this.planetService.findByName(name), HttpStatus.OK);
     }
 
     @PostMapping("/api/planet")
     public ResponseEntity<String> createPlanet(@RequestBody Planet newPlanet) {
+        if (!authenticateController.isLoggedIn()) {
+            throw new NotAuthorizedException("You must login to perform this action.");
+        }
         String message = this.planetService.createPlanet(newPlanet);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/planet/id/{id}")
     public ResponseEntity<String> deletePlanet(@PathVariable int id) {
+        if (!authenticateController.isLoggedIn()) {
+            throw new NotAuthorizedException("You must login to perform this action.");
+        }
         String message = this.planetService.deleteById(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

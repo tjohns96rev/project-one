@@ -8,14 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.entities.LoginInfo;
 import com.example.demo.entities.User;
 
 public interface UserDao extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
 
+    boolean existsByUsernameAndPassword(String username, String password);
+
     @Transactional
     @Modifying
     @Query(value = "insert into users values (default, :username, :password)", nativeQuery = true)
     void createUser(@Param("username") String username, @Param("password") String password);
-
 }
