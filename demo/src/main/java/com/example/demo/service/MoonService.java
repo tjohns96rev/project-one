@@ -26,7 +26,6 @@ public class MoonService {
     public Moon findByName(String name) {
         Optional<Moon> optMoon = this.moonDao.findByName(name);
         if (!optMoon.isPresent()) {
-            System.out.println("Made it here");
             throw new EntityNotFound("No moon found");
         }
         return optMoon.get();
@@ -35,7 +34,6 @@ public class MoonService {
     public Moon findById(int id) {
         Optional<Moon> optMoon = this.moonDao.findById(id);
         if (!optMoon.isPresent()) {
-            System.out.println("Hi!");
             throw new EntityNotFound("No moon found");
         }
         return optMoon.get();

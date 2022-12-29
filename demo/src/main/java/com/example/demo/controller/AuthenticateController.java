@@ -37,7 +37,6 @@ public class AuthenticateController {
                     HttpStatus.UNAUTHORIZED);
         }
         isLoggedIn = true;
-        System.out.println(userService.login(loginInfo));
         return new ResponseEntity<>("Login Successful", HttpStatus.OK);
     }
 
