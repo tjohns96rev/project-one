@@ -40,6 +40,17 @@
     		<artifactId>postgresql</artifactId>
    	 		<version>42.5.1</version>
 		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>7.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<version>1.9.5</version>
+		</dependency>
 	</dependencies>
 
 	<build>
