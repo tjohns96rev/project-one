@@ -3,7 +3,7 @@ version: '3'
 services:
 
   app:
-    image: tjohns96rev/project-one:file
+    image: tjohns96rev/project-one:latest
     container_name: project-one
     ports:
       - 8080:8080
@@ -17,7 +17,7 @@ services:
       - 3100:3100
     
   promtail:
-    image: grafana/promatil:latest
+    image: grafana/promtail:latest
     container_name: logging-promtail
     volumes:
       - ./configs/promtail-config.yml:/etc/promtail/promtail-config.yml
