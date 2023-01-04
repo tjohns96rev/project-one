@@ -1,7 +1,5 @@
 package com.example.demo.entities;
 
-import javax.persistence.Entity;
-
 public class LoginInfo {
     private String username;
     private String password;

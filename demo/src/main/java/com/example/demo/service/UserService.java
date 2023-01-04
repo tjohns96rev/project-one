@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.exceptions.EntityNotFound;
@@ -10,9 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.LoginInfo;
 import com.example.demo.entities.User;
-import com.example.demo.exceptions.EntityNotFound;
 import com.example.demo.repository.UserDao;
-import com.example.demo.entities.LoginInfo;
 
 @Service
 public class UserService {

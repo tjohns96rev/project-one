@@ -21,7 +21,6 @@ import com.example.demo.entities.Moon;
 import com.example.demo.exceptions.EntityNotFound;
 import com.example.demo.exceptions.NotAuthorizedException;
 import com.example.demo.service.MoonService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class MoonController {
@@ -60,6 +59,11 @@ public class MoonController {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.moonService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/break")
+    public ResponseEntity<String> breakStuff() {
+        return new ResponseEntity<>("Uh oh", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/api/moon/{name}")

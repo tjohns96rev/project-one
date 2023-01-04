@@ -19,6 +19,8 @@ public class AuthenticateController {
 
     private boolean isLoggedIn;
 
+    private static Logger authenticateLogger = LoggerFactory.getLogger(MoonController.class);
+
     public boolean isLoggedIn() {
         return isLoggedIn;
     }

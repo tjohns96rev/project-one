@@ -23,5 +23,4 @@ public class LoggingInterceptor implements HandlerInterceptor {
         MDC.put("METHOD", request.getMethod());
         return true;
     }
-
 }
