@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthenticateController authenticateController;
-
     @ExceptionHandler(EntityNotFound.class)
     public ResponseEntity<String> entityNotFound(EntityNotFound e) {
         userLogger.error(e.getLocalizedMessage(), e);
@@ -41,23 +40,23 @@ public class UserController {
     }
 
     @GetMapping("/api/user/id/{id}")
-    public ResponseEntity<User> findById(@PathVariable int id) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<User> findById(@PathVariable int id, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.userService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/api/user/{username}")
-    public ResponseEntity<User> findByUsername(@PathVariable String username) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<User> findByUsername(@PathVariable String username, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
     }
 
     @PostMapping("/user")
-    public ResponseEntity<String> createUser(@RequestBody User newUser) {
+    public ResponseEntity<String> createUser(@RequestBody User newUser, HttpSession session) {
         String message = this.userService.createUser(newUser);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
