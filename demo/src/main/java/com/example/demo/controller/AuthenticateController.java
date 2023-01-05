@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class AuthenticateController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginInfo loginInfo) {
+    public ResponseEntity<String> login(@RequestBody LoginInfo loginInfo, HttpSession session) {
         if (isLoggedIn) {
             return new ResponseEntity<>("You are already logged in. To switch accounts please logout first.",
                     HttpStatus.OK);
@@ -43,12 +45,14 @@ public class AuthenticateController {
             throw new Error("Sorry those credentials don't match any existing account.");
         }
         isLoggedIn = true;
+        session.setAttribute("isLoggedIn", true);
         return new ResponseEntity<>("Login Successful", HttpStatus.OK);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
+    public ResponseEntity<String> logout(HttpSession session) {
         isLoggedIn = false;
+        session.setAttribute("isLoggedIn", false);
         return new ResponseEntity<>("Logged out", HttpStatus.OK);
     }
 }

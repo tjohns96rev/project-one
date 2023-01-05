@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,6 @@ public class PlanetController {
     @Autowired
     private PlanetService planetService;
 
-    @Autowired
-    private AuthenticateController authenticateController;
-
     @ExceptionHandler(EntityNotFound.class)
     public ResponseEntity<String> entityNotFound(EntityNotFound e) {
         planetLogger.error(e.getLocalizedMessage(), e);
@@ -44,32 +43,32 @@ public class PlanetController {
     }
 
     @GetMapping("/api/planets")
-    public ResponseEntity<List<Planet>> findAll() {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<List<Planet>> findAll(HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(planetService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/api/planet/id/{id}")
-    public ResponseEntity<Planet> findById(@PathVariable int id) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<Planet> findById(@PathVariable int id, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.planetService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping("/api/planet/{name}")
-    public ResponseEntity<Planet> findByName(@PathVariable String name) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<Planet> findByName(@PathVariable String name, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.planetService.findByName(name), HttpStatus.OK);
     }
 
     @PostMapping("/api/planet")
-    public ResponseEntity<String> createPlanet(@RequestBody Planet newPlanet) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<String> createPlanet(@RequestBody Planet newPlanet, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         String message = this.planetService.createPlanet(newPlanet);
@@ -77,8 +76,8 @@ public class PlanetController {
     }
 
     @DeleteMapping("/api/planet/id/{id}")
-    public ResponseEntity<String> deletePlanet(@PathVariable int id) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<String> deletePlanet(@PathVariable int id, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         String message = this.planetService.deleteById(id);

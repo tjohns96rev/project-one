@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,6 @@ public class MoonController {
     @Autowired
     private MoonService moonService;
 
-    @Autowired
-    private AuthenticateController authenticateController;
-
     @ExceptionHandler(EntityNotFound.class)
     public ResponseEntity<String> entityNotFound(EntityNotFound e) {
         moonLogger.error(e.getLocalizedMessage(), e);
@@ -44,16 +43,16 @@ public class MoonController {
     }
 
     @GetMapping("/api/moons")
-    public ResponseEntity<List<Moon>> findAll() {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<List<Moon>> findAll(HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(moonService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/api/moon/id/{id}")
-    public ResponseEntity<Moon> findById(@PathVariable int id) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<Moon> findById(@PathVariable int id, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.moonService.findById(id), HttpStatus.OK);
@@ -65,16 +64,16 @@ public class MoonController {
     }
 
     @GetMapping("/api/moon/{name}")
-    public ResponseEntity<Moon> findByName(@PathVariable String name) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<Moon> findByName(@PathVariable String name, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(this.moonService.findByName(name), HttpStatus.OK);
     }
 
     @PostMapping("/api/moon")
-    public ResponseEntity<String> createMoon(@RequestBody Moon newMoon) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<String> createMoon(@RequestBody Moon newMoon, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         String message = this.moonService.createMoon(newMoon);
@@ -82,8 +81,8 @@ public class MoonController {
     }
 
     @DeleteMapping("/api/moon/id/{id}")
-    public ResponseEntity<String> deleteMoon(@PathVariable int id) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<String> deleteMoon(@PathVariable int id, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         String message = this.moonService.deleteById(id);
@@ -91,8 +90,8 @@ public class MoonController {
     }
 
     @GetMapping("/api/planet/moons/{ownerId}")
-    public ResponseEntity<List<Moon>> findByOwnerId(@PathVariable int ownerId) {
-        if (!authenticateController.isLoggedIn()) {
+    public ResponseEntity<List<Moon>> findByOwnerId(@PathVariable int ownerId, HttpSession session) {
+        if (session.getAttribute("isLoggedIn") == null || !(Boolean) session.getAttribute("isLoggedIn")) {
             throw new NotAuthorizedException("You must login to perform this action.");
         }
         return new ResponseEntity<>(moonService.findByOwnerId(ownerId), HttpStatus.OK);
