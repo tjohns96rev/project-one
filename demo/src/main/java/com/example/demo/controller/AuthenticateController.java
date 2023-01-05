@@ -20,7 +20,7 @@ public class AuthenticateController {
 
     private boolean isLoggedIn;
 
-    private static Logger authenticateLogger = LoggerFactory.getLogger(MoonController.class);
+    private static Logger authenticateLogger = LoggerFactory.getLogger(AuthenticateController.class);
 
     public boolean isLoggedIn() {
         return isLoggedIn;
