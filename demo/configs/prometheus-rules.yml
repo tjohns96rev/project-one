@@ -15,3 +15,11 @@ groups:
         annotations:
           summary: "Success rate is too low"
           description: "The percentage of successful responses from project-one is below 98%."
+      - alert: AppDown
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: warn
+        annotations:
+          summary: "App is not running"
+          description: "The project-one application has not been running for 5 min."
